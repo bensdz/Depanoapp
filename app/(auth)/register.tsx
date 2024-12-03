@@ -2,6 +2,7 @@ import CustomButton from "@/components/custombtn";
 import InputField from "@/components/inputfield";
 import OAuth from "@/components/OAuth";
 import { icons, images } from "@/constants";
+import { fetchAPI, serverExternal } from "@/lib/fetch";
 import { useSignUp } from "@clerk/clerk-expo";
 import { Link } from "@react-navigation/native";
 import { useRouter } from "expo-router";
@@ -9,6 +10,8 @@ import { useState } from "react";
 import { Text, View, Image, Alert } from "react-native";
 import { ScrollView } from "react-native";
 import ReactNativeModal from "react-native-modal";
+import Constants from "expo-constants";
+import { generateSignature } from "@/lib/auth";
 
 export default function Register() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -23,7 +26,7 @@ export default function Register() {
   const [verification, setVerification] = useState({
     code: "",
     error: "",
-    state: "pending",
+    state: "default",
   });
 
   const onSignUpPress = async () => {
@@ -37,9 +40,29 @@ export default function Register() {
         password: form.password,
       });
 
+      // const reqObject = {
+      //   name: form.name,
+      //   email: form.email,
+      //   clerkId: signUp.id,
+      //   emailStatus: false,
+      //   clientPwd: form.password,
+      // };
+      // const secret = Constants.expoConfig?.extra?.jwtSecret;
+      // if (!secret) throw new Error("Secret not defined");
+      // const token = await generateSignature(reqObject, secret);
+      // const res = await fetchAPI(`${serverExternal}/client`, {
+      //   method: "POST",
+      //   data: {
+      //     ...reqObject,
+      //     token,
+      //   },
+      // });
+
+      // if (!res) throw new Error("No Internal Server Response");
+
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
 
-      setVerification({ ...verification, state: "pending" });
+      setVerification({ ...verification, state: "pending", error: "" });
     } catch (err: any) {
       Alert.alert("Error", err.errors[0].message);
     }
@@ -54,9 +77,45 @@ export default function Register() {
       });
 
       if (completeSignUp.status === "complete") {
-        //todo: create db user
         await setActive({ session: completeSignUp.createdSessionId });
-        setVerification({ ...verification, state: "success" });
+
+        // //i used to modify user that was set in the database
+        // const reqObject = {
+        //   email: form.email,
+        //   clerkId: signUp.id,
+        //   emailStatus: true,
+        // };
+        // const secret = Constants.expoConfig?.extra?.jwtSecret;
+        // if (!secret) throw new Error("Secret not defined");
+        // const token = await generateSignature(reqObject, secret);
+        // console.log({ ...reqObject, token });
+        // const res = await fetchAPI(`${serverExternal}/client`, {
+        //   method: "PUT",
+        //   data: {
+        //     ...reqObject,
+        //     token,
+        //   },
+        // });
+        const reqObject = {
+          name: form.name,
+          email: form.email,
+          clerkId: completeSignUp.createdUserId,
+          emailStatus: false,
+          clientPwd: form.password,
+        };
+        const secret = Constants.expoConfig?.extra?.jwtSecret;
+        if (!secret) throw new Error("Secret not defined");
+        const token = await generateSignature(reqObject, secret);
+        const res = await fetchAPI(`${serverExternal}/client`, {
+          method: "POST",
+          data: {
+            ...reqObject,
+            token,
+          },
+        });
+
+        if (!res) throw new Error("No Internal Server Response");
+        setVerification({ ...verification, state: "success", error: "" });
       } else {
         setVerification({
           ...verification,

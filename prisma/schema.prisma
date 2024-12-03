@@ -1,0 +1,136 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum RideStatus {
+  CanceledBeforeAcceptance
+  CanceledMidRide
+  Successful
+  Pending
+}
+
+enum PaymentStatus {
+  CanceledBeforeAcceptance
+  CanceledMidRide
+  Successful
+  Pending
+}
+
+enum ReviewType {
+  Client
+  Driver
+}
+
+model Client {
+  id          Int      @id @default(autoincrement())
+  fullName    String
+  phoneNumber String?  
+  email       String   @unique
+  clientPwd   String 
+  clerkId     String
+  emailStatus Boolean
+  pfpLink     String?
+
+  // Relations
+  rides       Ride[]
+  reviews     Review[]
+}
+
+model Driver {
+  id          Int      @id @default(autoincrement())
+  fullName    String
+  phoneNumber String?
+  address     String   
+  email       String   @unique
+  driverPwd   String
+  clerkId     String
+  emailStatus Boolean
+  pfpLink     String?
+
+  // Relations
+  car       Car?
+  offers      Offer[]
+  rides       Ride[]
+  reviews     Review[]
+}
+
+model Car {
+  id         Int    @id @default(autoincrement())
+  carBrand   String
+  carModel   String
+  carPicLink String
+  nbSeats    Int
+  driverId   Int    @unique
+  driver     Driver @relation(fields: [driverId], references: [id])
+}
+
+model Ride {
+  id              Int           @id @default(autoincrement())
+  requestDate     DateTime
+  status          RideStatus
+  payment         PaymentStatus
+  dateClosed      DateTime?
+  adrOrigin       String
+  adrDest         String
+  originalPrice   Int
+  couponId        Int?
+  priceAfterCoupon Int?
+
+  clientId        Int
+  driverId        Int?
+
+  // Relations
+  client          Client @relation(fields: [clientId], references: [id])
+  driver          Driver? @relation(fields: [driverId], references: [id])
+  coupon          Coupon? @relation(fields: [couponId], references: [id])
+  offers          Offer[]
+  reviews         Review[]
+}
+
+model Review {
+  id          Int        @id @default(autoincrement())
+  dateReview  DateTime
+  reviewFor   ReviewType
+  title       String
+  content     String
+  nbStars     Int
+
+  clientId    Int?
+  driverId    Int?
+  rideId      Int
+
+  client      Client? @relation(fields: [clientId], references: [id])
+  driver      Driver? @relation(fields: [driverId], references: [id])
+  ride        Ride    @relation(fields: [rideId], references: [id])
+}
+
+model Offer {
+  id            Int       @id @default(autoincrement())
+  offerDate     DateTime
+  currAddress   String
+  kmDistance    Float
+  timeDistance  String
+  rideId        Int
+  driverId      Int
+
+  ride          Ride   @relation(fields: [rideId], references: [id])
+  driver        Driver @relation(fields: [driverId], references: [id])
+}
+
+model Coupon {
+  id         Int     @id @default(autoincrement())
+  couponName String
+  percentage Int
+  amount     Int
+  nbUses     Int
+
+  rides      Ride[]
+}

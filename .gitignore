@@ -8,6 +8,7 @@ npm-debug.*
 *.key
 *.mobileprovision
 *.orig.*
+
 web-build/
 
 # macOS
@@ -18,3 +19,5 @@ web-build/
 
 expo-env.d.ts
 # @end expo-cli
+.env
+app.json

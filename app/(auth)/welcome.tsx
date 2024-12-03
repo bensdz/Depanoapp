@@ -74,7 +74,7 @@ export default function Welcome() {
           className={"w-10/12 mt-10 mb-10 mx-auto"}
           onPress={() => {
             if (index === onboardingSwiperData.length - 1) {
-              router.push("/register");
+              router.push("/get-started");
             } else {
               if (swiperRef.current) {
                 swiperRef.current.scrollBy(1);

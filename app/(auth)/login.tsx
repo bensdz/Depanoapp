@@ -2,8 +2,11 @@ import CustomButton from "@/components/custombtn";
 import InputField from "@/components/inputfield";
 import OAuth from "@/components/OAuth";
 import { icons, images } from "@/constants";
+import { fetchAPI } from "@/lib/fetch";
+import { useSignIn } from "@clerk/clerk-expo";
 import { Link } from "@react-navigation/native";
-import { useState } from "react";
+import { useRouter } from "expo-router";
+import { useCallback, useState } from "react";
 import { Text, View, Image } from "react-native";
 import { ScrollView } from "react-native";
 
@@ -13,16 +16,41 @@ export default function Login() {
     password: "",
   });
 
-  const onSignInPress = () => {
-    console.log("Sign Up Pressed");
-  };
+  const { signIn, setActive, isLoaded } = useSignIn();
+  const router = useRouter();
+  const [error, setError] = useState("");
+
+  const onSignInPress = useCallback(async () => {
+    if (!isLoaded) {
+      return;
+    }
+
+    try {
+      const signInAttempt = await signIn.create({
+        identifier: form.email,
+        password: form.password,
+      });
+
+      if (signInAttempt.status === "complete") {
+        setError("");
+        await setActive({ session: signInAttempt.createdSessionId });
+        router.replace("/");
+      } else {
+        console.error(JSON.stringify(signInAttempt, null, 2));
+        setError("Invalid email or password");
+      }
+    } catch (err: any) {
+      console.error(JSON.stringify(err, null, 2));
+      setError("Invalid email or password");
+    }
+  }, [form, isLoaded, setActive, signIn, router]);
 
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-1 bg-white">
         <View className="relative w-full h-[250px]">
           <Image source={images.signUpCar} className="z-0 w-full h-[250px]" />
-          <Text className="text-2xl text-black font-JakartaSemiBold absolute mb-5 bottom-5 left-5">
+          <Text className="text-2xl text-black font-JakartaExtraBold absolute mb-5 bottom-5 left-5">
             Welcome Back!
           </Text>
         </View>
@@ -42,6 +70,9 @@ export default function Login() {
             onChange={(password: string) => setForm({ ...form, password })}
             secureText
           />
+
+          {error && <Text className="text-red-500 text-sm">{error}</Text>}
+
           <CustomButton
             title="Sign In"
             bgvariant="primary"
