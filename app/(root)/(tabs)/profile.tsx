@@ -74,19 +74,40 @@ const Profile = () => {
           <View className="flex flex-col items-start justify-start w-full">
             <InputField
               label="Name"
-              placeholder={userData?.fullName || "Not Found"}
+              value={userData?.fullName}
+              containerStyle="w-full"
+              inputStyle="p-3.5"
+              editable={true}
+              placeHolder={""}
+              onChange={function (value: string): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+
+            <InputField
+              label="Email"
+              value={userData?.email}
+              placeHolder={""}
+              onChange={function (value: string): void {
+                throw new Error("Function not implemented.");
+              }}
               containerStyle="w-full"
               inputStyle="p-3.5"
               editable={false}
             />
 
-            <InputField
-              label="Email"
-              placeholder={userData?.email || "Not Found"}
+            {/* <InputField
+              label="Email Status"
+              placeholder={userData?.emailStatus || "Not Found"}
               containerStyle="w-full"
               inputStyle="p-3.5"
               editable={false}
-            />
+              placeHolder={""}
+              value={""}
+              onChange={function (value: string): void {
+                throw new Error("Function not implemented.");
+              }}
+            /> */}
 
             <InputField
               label="Phone"
@@ -94,6 +115,11 @@ const Profile = () => {
               containerStyle="w-full"
               inputStyle="p-3.5"
               editable={false}
+              placeHolder={""}
+              value={""}
+              onChange={function (value: string): void {
+                throw new Error("Function not implemented.");
+              }}
             />
           </View>
         </View>

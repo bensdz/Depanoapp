@@ -19,6 +19,7 @@ export default function Login() {
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const onSignInPress = useCallback(async () => {
     if (!isLoaded) {
@@ -26,6 +27,7 @@ export default function Login() {
     }
 
     try {
+      setLoading(true);
       const signInAttempt = await signIn.create({
         identifier: form.email,
         password: form.password,
@@ -39,7 +41,9 @@ export default function Login() {
         console.error(JSON.stringify(signInAttempt, null, 2));
         setError("Invalid email or password");
       }
+      setLoading(false);
     } catch (err: any) {
+      setLoading(false);
       console.error(JSON.stringify(err, null, 2));
       setError("Invalid email or password");
     }
@@ -78,6 +82,7 @@ export default function Login() {
             bgvariant="primary"
             onPress={onSignInPress}
             className="mt-5"
+            disabled={loading}
           />
 
           <OAuth />

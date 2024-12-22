@@ -28,9 +28,14 @@ export const useFetch = <T>(url: string, options?: RequestInit) => {
     setLoading(true);
     setError(null);
     const url2 = `${serverExternal}${url}`;
+    const axiosOptions: AxiosRequestConfig = {
+      method: options?.method,
+      headers: options?.headers as any,
+      data: (options as any)?.body,
+    };
     try {
-      const result = await fetchAPI(url2, options);
-      setData(result.data);
+      const result = await fetchAPI(url2, axiosOptions);
+      setData(result);
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -45,4 +50,4 @@ export const useFetch = <T>(url: string, options?: RequestInit) => {
   return { data, loading, error, refetch: fetchData };
 };
 
-export const serverExternal = "http://192.168.118.142:3000";
+export const serverExternal = "http://192.168.31.211:3000";

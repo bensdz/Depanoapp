@@ -10,7 +10,6 @@ import { useState } from "react";
 import { Text, View, Image, Alert } from "react-native";
 import { ScrollView } from "react-native";
 import ReactNativeModal from "react-native-modal";
-import Constants from "expo-constants";
 import { generateSignature } from "@/lib/auth";
 
 export default function Register() {
@@ -47,7 +46,7 @@ export default function Register() {
       //   emailStatus: false,
       //   clientPwd: form.password,
       // };
-      // const secret = Constants.expoConfig?.extra?.jwtSecret;
+      // const secret = process.env.EXPO_PUBLIC_SECRET_KEY;
       // if (!secret) throw new Error("Secret not defined");
       // const token = await generateSignature(reqObject, secret);
       // const res = await fetchAPI(`${serverExternal}/client`, {
@@ -85,7 +84,7 @@ export default function Register() {
         //   clerkId: signUp.id,
         //   emailStatus: true,
         // };
-        // const secret = Constants.expoConfig?.extra?.jwtSecret;
+        // const secret = process.env.EXPO_PUBLIC_SECRET_KEY;
         // if (!secret) throw new Error("Secret not defined");
         // const token = await generateSignature(reqObject, secret);
         // console.log({ ...reqObject, token });
@@ -103,7 +102,7 @@ export default function Register() {
           emailStatus: false,
           clientPwd: form.password,
         };
-        const secret = Constants.expoConfig?.extra?.jwtSecret;
+        const secret = process.env.EXPO_PUBLIC_SECRET_KEY;
         if (!secret) throw new Error("Secret not defined");
         const token = await generateSignature(reqObject, secret);
         const res = await fetchAPI(`${serverExternal}/client`, {

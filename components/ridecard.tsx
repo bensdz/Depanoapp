@@ -2,10 +2,29 @@ import { Image, Text, View } from "react-native";
 
 import { icons } from "@/constants";
 import { formatDate, formatTime } from "@/lib/utils";
-import Constants from "expo-constants";
 
-const RideCard = ({ ride }: { ride: any }) => {
-  const key = Constants.expoConfig?.extra?.geoApify;
+interface Ride {
+  adrOrigin: string;
+  adrDest: string;
+  longDest: number;
+  latDest: number;
+  requestDate: string;
+  dateClosed: string;
+  driver?: {
+    fullName?: string;
+    car?: {
+      nbSeats?: number;
+    };
+  };
+  status:
+    | "CanceledBeforeAcceptance"
+    | "CanceledMidRide"
+    | "Successful"
+    | "Pending";
+}
+
+const RideCard = ({ ride }: { ride: Ride }) => {
+  const key = process.env.EXPO_PUBLIC_GEO_APIFY;
   //console.log(ride);
   const statusMatchText = {
     CanceledBeforeAcceptance: "Canceled",
@@ -62,7 +81,7 @@ const RideCard = ({ ride }: { ride: any }) => {
 
           <View className="flex flex-row items-center w-full justify-between mb-5">
             <Text className="text-md font-JakartaMedium text-gray-500">
-              Car Seats
+              {statusMatchText[ride.status]}
             </Text>
             <Text className="text-md font-JakartaBold">
               {ride.driver?.car?.nbSeats || "N/A"}
@@ -78,7 +97,7 @@ const RideCard = ({ ride }: { ride: any }) => {
                 ride.status === "Successful" ? "text-green-500" : "text-red-500"
               }`}
             >
-              {statusMatchText[ride.status]}
+              {statusMatchText[ride?.status]}
             </Text>
           </View>
         </View>

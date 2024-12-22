@@ -43,10 +43,6 @@
     ],
     "experiments": {
       "typedRoutes": true
-    },
-    "extra": {
-      "jwtSecret": "TzHShGvKzbvuiri3EkqqWElPUsJqesg3ztp6J0m4rucbGxDI6cmLHwtRg6WzW4hkvYEQjmNhNOMMCnsKibcufuop72v0E5dtRiCRULafLvL30X52zr5GWzFLdR9O5ino0Bn06GAQO70S4vSkVH89PfCnGPVIUSfkuSD55E4tNxF2l4FfpT3wgWdV8uItQt3TCelQ9LPYUaJh9nGHerfgr48pD6zV56fR7ZPr0S5rmSZw3nfXPYZJMjEyF4rxxocR",
-      "geoApify": "8192672a6b0d4db1beab6dcf15fb6f71"
     }
   }
 }
