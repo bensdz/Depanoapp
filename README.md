@@ -1,6 +1,6 @@
 # Depano 🚗
 
-<img src="https://i.ibb.co/mvzFDQQ/image1.png" alt="Project Banner">
+<img src="https://i.imghippo.com/files/Euj6855MtI.png" alt="" border="0">
 
 A full-stack mobile application built with React Native, demonstrating ride-hailing functionality similar to Uber. Features include live location tracking, ride booking, payments via Stripe, and authentication.
 
