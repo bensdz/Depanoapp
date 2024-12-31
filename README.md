@@ -4,6 +4,9 @@
 
 A full-stack mobile application built with React Native, demonstrating ride-hailing functionality similar to Uber. Features include live location tracking, ride booking, payments via Stripe, and authentication.
 
+## DB Architecture
+<img src="https://i.imghippo.com/files/tl2332jtk.jpg" alt="" border="0">
+
 ## Tech Stack
 
 - React Native
