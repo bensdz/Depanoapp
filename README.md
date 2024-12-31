@@ -1,50 +1,98 @@
-# Welcome to your Expo app 👋
+# Depano 🚗
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<img src="https://i.ibb.co/mvzFDQQ/image1.png" alt="Project Banner">
 
-## Get started
+A full-stack mobile application built with React Native, demonstrating ride-hailing functionality similar to Uber. Features include live location tracking, ride booking, payments via Stripe, and authentication.
 
-1. Install dependencies
+## Tech Stack
 
-   ```bash
-   npm install
-   ```
+- React Native
+- Expo
+- PostgreSQL
+- Stripe
+- Google Maps
+- Zustand
+- Clerk
+- TailwindCSS
 
-2. Start the app
+## Key Features
 
-   ```bash
-    npx expo start
-   ```
+- Complete onboarding flow with email/password and Google OAuth authentication 
+- Live location tracking with Google Maps integration
+- Ride search with Google Places autocomplete
+- Real-time ride selection and booking
+- Secure payments through Stripe
+- Ride history and user profiles
+- Cross-platform support (iOS & Android)
 
-In the output, you'll find options to open the app in a
+## Setup Instructions
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Prerequisites
+- Node.js
+- npm
+- Git
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Installation
 
-## Get a fresh project
-
-When you're ready, run:
-
+1. Clone the repository:
 ```bash
-npm run reset-project
+git clone https://github.com/bensdz/Depanoapp.git
+cd uber
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Install dependencies:
+```bash
+npm install
+```
 
-## Learn more
+3. Configure environment variables:
+Create `.env` file with the following:
+```
+EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=
+EXPO_PUBLIC_PLACES_API_KEY=
+EXPO_PUBLIC_DIRECTIONS_API_KEY=
+EXPO_PUBLIC_GEOAPIFY_API_KEY=
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+4. Start the development server:
+```bash
+npx expo start
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Project Structure
 
-## Join the community
+```
+├── components/
+│   ├── CustomButton/
+│   ├── InputField/
+│   └── DriverCard.tsx
+├── lib/
+│   ├── fetch.ts
+│   ├── map.ts
+│   └── utils.ts
+├── screens/
+│   ├── book-ride/
+│   └── (tabs)/
+└── store/
+    └── index.ts
+```
 
-Join our community of developers creating universal apps.
+## Database Schema
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+The application uses PostgreSQL with the following main tables:
+- Users
+- Drivers
+- Rides
+
+## API Integration
+
+The app integrates with several external services:
+- Clerk for authentication
+- Google Maps for location services
+- Stripe for payment processing
+- Geoapify for mapping features
+
+## Additional Resources
+
+- [Expo NativeWind Setup](https://docs.expo.dev/guides/using-tailwind/)
+- [Clerk Expo Quickstart](https://clerk.com/docs/quickstarts/expo)
